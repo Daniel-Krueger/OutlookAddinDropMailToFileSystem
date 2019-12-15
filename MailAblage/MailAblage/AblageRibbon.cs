@@ -13,19 +13,21 @@ namespace MailAblage
     [ComVisible(true), Guid("8B56AE5D-104D-4c0c-BEAA-3E44C5A7E1DC"), ProgId("MailAblage.AblageRibbon")]
     public partial class AblageRibbon
     {
-        private void AblageRibbon_Load(object sender, RibbonUIEventArgs e)
+
+
+        private void toggleDropPane_Click(object sender, RibbonControlEventArgs e)
         {
-            
+            Globals.ThisAddIn.DropPane.Visible = ((RibbonToggleButton)sender).Checked;
         }
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
+        private void toggleLogPane_Click(object sender, RibbonControlEventArgs e)
         {
-           
+            Globals.ThisAddIn.LogPane.Visible = ((RibbonToggleButton)sender).Checked;
         }
 
-        private void AblageRibbon_DragOver(object sender, DragEventArgs e)
+        private void automaticDelete_Click(object sender, RibbonControlEventArgs e)
         {
-            e.Effect = DragDropEffects.Copy;
+            Properties.Settings.Default.AutomaticDelete = this.AutomaticDelecte.Checked;
         }
     }
 }

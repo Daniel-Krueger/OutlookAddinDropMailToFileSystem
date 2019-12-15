@@ -34,41 +34,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.label1 = this.Factory.CreateRibbonLabel();
-            this.Verzeichnis = this.Factory.CreateRibbonEditBox();
+            this.TabAblage = this.Factory.CreateRibbonTab();
+            this.Settings = this.Factory.CreateRibbonGroup();
+            this.ToggleDropAreaPane = this.Factory.CreateRibbonToggleButton();
+            this.AutomaticDelecte = this.Factory.CreateRibbonCheckBox();
+            this.ToggleLogPane = this.Factory.CreateRibbonToggleButton();
+            this.button2 = this.Factory.CreateRibbonButton();
             this.directorySearcher = new System.DirectoryServices.DirectorySearcher();
             this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
-            this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.TabAblage.SuspendLayout();
+            this.Settings.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tab1
+            // TabAblage
             // 
-            this.tab1.Groups.Add(this.group1);
-            this.tab1.Label = "Ablage";
-            this.tab1.Name = "tab1";
+            this.TabAblage.Groups.Add(this.Settings);
+            this.TabAblage.Label = "Ablage";
+            this.TabAblage.Name = "TabAblage";
             // 
-            // group1
+            // Settings
             // 
-            this.group1.Items.Add(this.label1);
-            this.group1.Items.Add(this.Verzeichnis);
-            this.group1.Items.Add(this.button2);
-            this.group1.Label = "Einstellungen";
-            this.group1.Name = "group1";
+            this.Settings.Items.Add(this.ToggleDropAreaPane);
+            this.Settings.Items.Add(this.AutomaticDelecte);
+            this.Settings.Items.Add(this.ToggleLogPane);
+            this.Settings.Items.Add(this.button2);
+            this.Settings.Label = "Einstellungen";
+            this.Settings.Name = "Settings";
             // 
-            // label1
+            // ToggleDropAreaPane
             // 
-            this.label1.Label = "label1";
-            this.label1.Name = "label1";
+            this.ToggleDropAreaPane.Label = "Ablage anzeigen";
+            this.ToggleDropAreaPane.Name = "ToggleDropAreaPane";
+            this.ToggleDropAreaPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleDropPane_Click);
             // 
-            // Verzeichnis
+            // AutomaticDelecte
             // 
-            this.Verzeichnis.Label = "editBox1";
-            this.Verzeichnis.Name = "Verzeichnis";
-            this.Verzeichnis.Text = null;
+            this.AutomaticDelecte.Label = "Automatisch löschen";
+            this.AutomaticDelecte.Name = "AutomaticDelecte";
+            this.AutomaticDelecte.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.automaticDelete_Click);
+            // 
+            // ToggleLogPane
+            // 
+            this.ToggleLogPane.Label = "Log anzeigen";
+            this.ToggleLogPane.Name = "ToggleLogPane";
+            this.ToggleLogPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleLogPane_Click);
+            // 
+            // button2
+            // 
+            this.button2.Label = "";
+            this.button2.Name = "button2";
             // 
             // directorySearcher
             // 
@@ -81,34 +95,28 @@
             this.button1.Label = "button1";
             this.button1.Name = "button1";
             // 
-            // button2
-            // 
-            this.button2.Label = "button2";
-            this.button2.Name = "button2";
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
-            // 
             // AblageRibbon
             // 
             this.Name = "AblageRibbon";
             this.RibbonType = "Microsoft.Outlook.Explorer";
-            this.Tabs.Add(this.tab1);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.AblageRibbon_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.Tabs.Add(this.TabAblage);
+            this.TabAblage.ResumeLayout(false);
+            this.TabAblage.PerformLayout();
+            this.Settings.ResumeLayout(false);
+            this.Settings.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox Verzeichnis;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup Settings;
         private System.DirectoryServices.DirectorySearcher directorySearcher;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab TabAblage;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton ToggleDropAreaPane;
+        public Microsoft.Office.Tools.Ribbon.RibbonCheckBox AutomaticDelecte;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton ToggleLogPane;
     }
 
     partial class ThisRibbonCollection

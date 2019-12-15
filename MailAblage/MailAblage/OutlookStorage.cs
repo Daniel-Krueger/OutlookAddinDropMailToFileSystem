@@ -13,7 +13,8 @@
  *
  * This file defines the OutlookStorage class used to read an outlook msg file.
  */
-
+//
+// https://github.com/RonKohl/MSGReader/blob/master/MsgReader/Outlook/MapiTags.cs
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -693,6 +694,15 @@ namespace MailAblage
             }
 
             /// <summary>
+            /// Gets the subject of the outlook message.
+            /// </summary>
+            /// <value>The subject of the outlook message.</value>
+            public String ID
+            {
+                get { return this.GetMapiPropertyString(OutlookStorage.PR_INTERNET_MESSAGE_ID); }
+            }
+
+            /// <summary>
             /// Gets the body of the outlook message in plain text format.
             /// </summary>
             /// <value>The body of the outlook message in plain text format.</value>
@@ -1018,6 +1028,7 @@ public DateTime ReceivedDate
         private const string PR_SENDER_NAME = "0C1A";
         private const string PR_RECEIVED_DATE = "007D";
         private const string PR_RECEIVED_DATE_2 = "0047";
+        private const string PR_INTERNET_MESSAGE_ID = "1035";
 
         //property stream constants
         private const string PROPERTIES_STREAM = "__properties_version1.0";

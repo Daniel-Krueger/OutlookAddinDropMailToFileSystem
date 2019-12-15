@@ -190,28 +190,36 @@
       <DependentUpon>AblageRibbon.cs</DependentUpon>
     </Compile>
     <Compile Include="DropTarget.cs" />
-    <Compile Include="DropRegion.cs">
+    <Compile Include="DropUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DropRegion.Designer.cs">
-      <DependentUpon>DropRegion.cs</DependentUpon>
+    <Compile Include="GlobalErrorHandler.cs" />
+    <Compile Include="LogEntry.cs" />
+    <Compile Include="LogOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogOutput.Designer.cs">
+      <DependentUpon>LogOutput.cs</DependentUpon>
     </Compile>
     <Compile Include="OutlookDataObject.cs" />
     <Compile Include="OutlookStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DropArea.cs">
+    <Compile Include="DropForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DropArea.Designer.cs">
-      <DependentUpon>DropArea.cs</DependentUpon>
+    <Compile Include="DropForm.Designer.cs">
+      <DependentUpon>DropForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="AblageRibbon.resx">
       <DependentUpon>AblageRibbon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DropRegion.resx">
-      <DependentUpon>DropRegion.cs</DependentUpon>
+    <EmbeddedResource Include="DropUserControl.resx">
+      <DependentUpon>DropUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogOutput.resx">
+      <DependentUpon>LogOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -222,9 +230,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DropForm.resx">
+      <DependentUpon>DropForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DropArea.resx">
       <DependentUpon>DropArea.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="MailAblage_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -233,6 +245,13 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="DropArea.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DropArea.Designer.cs">
+      <DependentUpon>DropArea.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -268,7 +287,7 @@
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Outlook" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Outlook" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{A58A78EB-1C92-4DDD-80CF-E8BD872ABFC4}" />
         <Host Name="Outlook" GeneratedCodeNamespace="MailAblage" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" PublishedHash="4411503C8481CC9983B13DA5B69A91B6BAF3F9E5" />
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="4411503C8481CC9983B13DA5B69A91B6BAF3F9E5" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
