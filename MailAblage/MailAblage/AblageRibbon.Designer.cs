@@ -72,12 +72,7 @@
             this.AutomaticDelecte.Label = "Automatisch löschen";
             this.AutomaticDelecte.Name = "AutomaticDelecte";
             this.AutomaticDelecte.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.automaticDelete_Click);
-            // 
-            // ToggleLogPane
-            // 
-            this.ToggleLogPane.Label = "Log anzeigen";
-            this.ToggleLogPane.Name = "ToggleLogPane";
-            this.ToggleLogPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleLogPane_Click);
+        
             // 
             // button2
             // 

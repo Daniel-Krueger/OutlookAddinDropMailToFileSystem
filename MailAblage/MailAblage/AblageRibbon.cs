@@ -20,11 +20,6 @@ namespace MailAblage
             Globals.ThisAddIn.DropPane.Visible = ((RibbonToggleButton)sender).Checked;
         }
 
-        private void toggleLogPane_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.LogPane.Visible = ((RibbonToggleButton)sender).Checked;
-        }
-
         private void automaticDelete_Click(object sender, RibbonControlEventArgs e)
         {
             Properties.Settings.Default.AutomaticDelete = this.AutomaticDelecte.Checked;

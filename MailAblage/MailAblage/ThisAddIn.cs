@@ -45,10 +45,6 @@ namespace MailAblage
             Globals.Ribbons.AblageRibbon.ToggleDropAreaPane.Checked = dropPane.Visible;
         }
 
-        private void logPaneVisibilityChanged(object sender, System.EventArgs e)
-        {
-            Globals.Ribbons.AblageRibbon.ToggleLogPane.Checked = LogPane.Visible;
-        }
 
         private void DroppedFileSaved(object sender, DropUserControl.FileSavedEventArgs eventArgs)
         {
