@@ -81,14 +81,30 @@ namespace MailAblage
                         itemToDelete.Delete();
                         deleted = true;
                     }
+                    catch (System.Exception ex)
+                    {
+                        newEntry.Message = $"Mail {itemToDelete.Subject} konnte nicht gelöscht werden. Fehler: {ex.Message}";
+                    }
                     finally
                     {
                         newEntry.deleted = deleted;
                     }
                 }
+                else
+                {
+                    newEntry.Message = $"Die gedroppte Mail {newEntry.MailSubject} wurde nicht gefunden.";
+                }
+            }
+            catch (System.Exception ex)
+            {
+                newEntry.Message = $"Unerwarteter Fehler: {ex.Message}";
             }
             finally
             {
+                if (!string.IsNullOrEmpty(newEntry.Message))
+                {
+                    System.Windows.Forms.MessageBox.Show(newEntry.Message, "Fehler", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                }
                 dropArea.LogEntries.Add(newEntry);
             }
             //string filter = string.Format("@SQL=\"http://schemas.microsoft.com/mapi/proptag/0x1035001F\" = '{0}'", eventArgs.Info);
@@ -124,7 +140,7 @@ namespace MailAblage
             try
             {
                 _handlingUnhandledException = true;
-                
+
                 //ErrorHandler.HandleFatalError(exception, "Unhandled exception occurred, plug-in will close.");
             }
             finally

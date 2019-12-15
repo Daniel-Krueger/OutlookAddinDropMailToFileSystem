@@ -76,7 +76,7 @@ namespace MailAblage
             }
             catch (Exception ex)
             {
-
+                System.Windows.Forms.MessageBox.Show($"{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
