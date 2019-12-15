@@ -20,9 +20,7 @@
             this.selectedFolder = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.selectedFileName = new System.Windows.Forms.ComboBox();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.button1 = new System.Windows.Forms.Button();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.logoutputGridView = new System.Windows.Forms.DataGridView();
             this.MailDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -31,6 +29,7 @@
             this.Filename = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Deleted = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.saveAsDropArea = new MailAblage.SaveAsDropArea();
             this.fileDropArea = new MailAblage.DropArea();
             ((System.ComponentModel.ISupportInitialize)(this.logoutputGridView)).BeginInit();
             this.SuspendLayout();
@@ -157,12 +156,20 @@
             this.Message.Name = "Message";
             this.Message.Width = 78;
             // 
+            // saveAsDropArea
+            // 
+            this.saveAsDropArea.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.saveAsDropArea.Location = new System.Drawing.Point(6, 108);
+            this.saveAsDropArea.Name = "saveAsDropArea";
+            this.saveAsDropArea.Size = new System.Drawing.Size(132, 134);
+            this.saveAsDropArea.TabIndex = 9;
+            // 
             // fileDropArea
             // 
             this.fileDropArea.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.fileDropArea.Location = new System.Drawing.Point(253, 108);
+            this.fileDropArea.Location = new System.Drawing.Point(176, 108);
             this.fileDropArea.Name = "fileDropArea";
-            this.fileDropArea.Size = new System.Drawing.Size(150, 150);
+            this.fileDropArea.Size = new System.Drawing.Size(127, 134);
             this.fileDropArea.TabIndex = 7;
             // 
             // DropForm
@@ -171,6 +178,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.saveAsDropArea);
             this.Controls.Add(this.logoutputGridView);
             this.Controls.Add(this.fileDropArea);
             this.Controls.Add(this.button1);
@@ -191,10 +199,8 @@
         private System.Windows.Forms.ComboBox selectedFolder;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox selectedFileName;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Button button1;
         public DropArea fileDropArea;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.DataGridView logoutputGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn MailDateTime;
@@ -203,5 +209,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Filename;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Deleted;
         private System.Windows.Forms.DataGridViewTextBoxColumn Message;
+        public SaveAsDropArea saveAsDropArea;
     }
 }

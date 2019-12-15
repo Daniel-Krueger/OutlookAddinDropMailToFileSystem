@@ -189,6 +189,12 @@
     <Compile Include="AblageRibbon.Designer.cs">
       <DependentUpon>AblageRibbon.cs</DependentUpon>
     </Compile>
+    <Compile Include="SaveAsDropArea.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SaveAsDropArea.Designer.cs">
+      <DependentUpon>SaveAsDropArea.cs</DependentUpon>
+    </Compile>
     <Compile Include="DropTarget.cs" />
     <Compile Include="DropUserControl.cs">
       <SubType>UserControl</SubType>
@@ -208,6 +214,9 @@
     </Compile>
     <EmbeddedResource Include="AblageRibbon.resx">
       <DependentUpon>AblageRibbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveAsDropArea.resx">
+      <DependentUpon>SaveAsDropArea.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DropUserControl.resx">
       <DependentUpon>DropUserControl.cs</DependentUpon>

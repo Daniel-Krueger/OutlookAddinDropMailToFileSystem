@@ -29,6 +29,7 @@ namespace MailAblage
             RegisterToExceptionEvents();
             dropArea = new DropForm();
             dropArea.fileDropArea.OnFileSaved += DroppedFileSaved;
+            dropArea.saveAsDropArea.OnFileSaved += DroppedFileSaved;
             dropPane = this.CustomTaskPanes.Add(dropArea, "Ablage");
             dropPane.Visible = Globals.Ribbons.AblageRibbon.ToggleDropAreaPane.Checked;
             dropPane.VisibleChanged += new EventHandler(dropPaneVisibilityChanged);

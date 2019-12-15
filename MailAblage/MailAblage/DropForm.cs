@@ -27,6 +27,26 @@ namespace MailAblage
             InitControls(null);
         }
 
+        public void InitControls(string defaultPath)
+        {
+            this.fileDropArea.SelectedFileName = this.selectedFileName;
+            this.fileDropArea.SelectedFolder = this.selectedFolder;
+            this.saveAsDropArea.SelectedFileName = this.selectedFileName;
+            this.saveAsDropArea.SelectedFolder = this.selectedFolder;
+
+            this.DefaultPath = defaultPath;
+            if (Properties.Settings.Default.LastFolders != null && Properties.Settings.Default.LastFolders.Count > 0)
+            {
+                string[] newValues = new string[Properties.Settings.Default.LastFolders.Count];
+                Properties.Settings.Default.LastFolders.CopyTo(newValues, 0);
+                this.selectedFolder.Items.AddRange(newValues);
+                this.selectedFolder.SelectedItem = this.selectedFolder.Items[0];
+            }
+
+            LogEntries = new BindingSource();
+            this.logoutputGridView.DataSource = LogEntries;
+            logoutputGridView.AutoGenerateColumns = false;
+        }
         protected override void Dispose(bool disposing)
         {
             Properties.Settings.Default.LastFolders = new System.Collections.Specialized.StringCollection();
@@ -44,24 +64,31 @@ namespace MailAblage
             base.Dispose(disposing);
         }
 
-        public void InitControls(string defaultPath)
+        private void selectDirectory_ButtonClick(object sender, MouseEventArgs e)
         {
-            this.fileDropArea.SelectedFileName = this.selectedFileName;
-            this.fileDropArea.SelectedFolder = this.selectedFolder;
-            this.folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
-            this.DefaultPath = defaultPath;
-            if (Properties.Settings.Default.LastFolders != null && Properties.Settings.Default.LastFolders.Count > 0)
+            if (!string.IsNullOrEmpty(this.selectedFolder.SelectedItem as string))
             {
-                string[] newValues = new string[Properties.Settings.Default.LastFolders.Count];
-                Properties.Settings.Default.LastFolders.CopyTo(newValues, 0);
-                this.selectedFolder.Items.AddRange(newValues);
-                this.selectedFolder.SelectedItem = this.selectedFolder.Items[0];
+                this.openFileDialog.InitialDirectory = this.selectedFolder.SelectedItem as string;
+            }
+            else if (string.IsNullOrEmpty(this.openFileDialog.InitialDirectory))
+            {
+                this.openFileDialog.InitialDirectory = DefaultPath;
+            }
+            DialogResult result = this.openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string[] currentValues = new string[this.selectedFolder.Items.Count];
+                this.selectedFolder.Items.CopyTo(currentValues, 0);
+                this.selectedFolder.Items.Clear();
+                string selectedPath = this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\"));
+                var index = this.selectedFolder.Items.Add(selectedPath);
+                this.selectedFolder.SelectedItem = index;
+                this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
+                this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(selectedPath)).Take(MaxFolderNames).ToArray());
             }
 
-            LogEntries = new BindingSource();
-            this.logoutputGridView.DataSource = LogEntries;
-            logoutputGridView.AutoGenerateColumns = false;
         }
+
 
         private void DisplayMessage(OutlookStorage.Message outlookMsg)
         {
@@ -87,30 +114,6 @@ namespace MailAblage
             //{
             //    DisplayMessage(subMessage);
             //}
-        }
-
-        private void selectDirectory_ButtonClick(object sender, MouseEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.selectedFolder.SelectedItem as string))
-            {
-                this.openFileDialog.InitialDirectory = this.selectedFolder.SelectedItem as string;
-            }
-            else if (string.IsNullOrEmpty(this.folderBrowserDialog.SelectedPath))
-            {
-                this.openFileDialog.InitialDirectory = DefaultPath;
-            }
-            DialogResult result = this.openFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                string[] currentValues = new string[this.selectedFolder.Items.Count];
-                this.selectedFolder.Items.CopyTo(currentValues, 0);
-                this.selectedFolder.Items.Clear();
-                var index = this.selectedFolder.Items.Add(this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\")));
-                this.selectedFolder.SelectedItem = index;
-                this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
-                this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(folderBrowserDialog.SelectedPath)).Take(MaxFolderNames).ToArray());
-            }
-
         }
 
     }
