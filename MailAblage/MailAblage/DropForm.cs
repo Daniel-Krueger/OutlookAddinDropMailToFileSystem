@@ -18,7 +18,8 @@ namespace MailAblage
 
         public string DefaultPath = "";
         private const int MaxFolderNames = 5;
-        private static string LastFolderFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), @"MailAblage_LastFolders.json");
+
+        public BindingSource LogEntries { get; private set; }
 
         public DropForm()
         {
@@ -56,17 +57,10 @@ namespace MailAblage
                 this.selectedFolder.Items.AddRange(newValues);
                 this.selectedFolder.SelectedItem = this.selectedFolder.Items[0];
             }
-            //if (File.Exists(LastFolderFilePath))
-            //{
-            //    var content = File.ReadAllText(LastFolderFilePath);
-            //    var folders = content.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            //    if (folders.Length > 0)
-            //    {
-            //        this.selectedFolder.Items.AddRange(folders);
-            //        this.selectedFolder.SelectedItem = folders[0];
-            //    }
-            //}
 
+            LogEntries = new BindingSource();
+            this.logoutputGridView.DataSource = LogEntries;
+            logoutputGridView.AutoGenerateColumns = false;
         }
 
         private void DisplayMessage(OutlookStorage.Message outlookMsg)
@@ -119,9 +113,5 @@ namespace MailAblage
 
         }
 
-        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
     }
 }

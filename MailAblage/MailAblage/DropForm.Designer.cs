@@ -22,9 +22,17 @@
             this.selectedFileName = new System.Windows.Forms.ComboBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.button1 = new System.Windows.Forms.Button();
-            this.fileDropArea = new MailAblage.DropArea();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.logoutputGridView = new System.Windows.Forms.DataGridView();
+            this.MailDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MailSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Folder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Filename = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Deleted = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileDropArea = new MailAblage.DropArea();
+            ((System.ComponentModel.ISupportInitialize)(this.logoutputGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -43,7 +51,7 @@
             this.selectedFolder.FormattingEnabled = true;
             this.selectedFolder.Location = new System.Drawing.Point(98, 28);
             this.selectedFolder.Name = "selectedFolder";
-            this.selectedFolder.Size = new System.Drawing.Size(348, 21);
+            this.selectedFolder.Size = new System.Drawing.Size(305, 21);
             this.selectedFolder.TabIndex = 3;
             // 
             // label2
@@ -62,7 +70,7 @@
             this.selectedFileName.FormattingEnabled = true;
             this.selectedFileName.Location = new System.Drawing.Point(6, 81);
             this.selectedFileName.Name = "selectedFileName";
-            this.selectedFileName.Size = new System.Drawing.Size(440, 21);
+            this.selectedFileName.Size = new System.Drawing.Size(397, 21);
             this.selectedFileName.TabIndex = 5;
             // 
             // button1
@@ -75,22 +83,87 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.selectDirectory_ButtonClick);
             // 
-            // fileDropArea
-            // 
-            this.fileDropArea.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.fileDropArea.Location = new System.Drawing.Point(6, 108);
-            this.fileDropArea.Name = "fileDropArea";
-            this.fileDropArea.Size = new System.Drawing.Size(150, 150);
-            this.fileDropArea.TabIndex = 7;
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
-            // 
             // openFileDialog
             // 
             this.openFileDialog.CheckFileExists = false;
             this.openFileDialog.FileName = "openFileDialog";
+            // 
+            // logoutputGridView
+            // 
+            this.logoutputGridView.AllowUserToAddRows = false;
+            this.logoutputGridView.AllowUserToDeleteRows = false;
+            this.logoutputGridView.AllowUserToOrderColumns = true;
+            this.logoutputGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.logoutputGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.logoutputGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.logoutputGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.MailDateTime,
+            this.MailSubject,
+            this.Folder,
+            this.Filename,
+            this.Deleted,
+            this.Message});
+            this.logoutputGridView.Location = new System.Drawing.Point(3, 264);
+            this.logoutputGridView.Name = "logoutputGridView";
+            this.logoutputGridView.Size = new System.Drawing.Size(400, 416);
+            this.logoutputGridView.TabIndex = 8;
+            // 
+            // MailDateTime
+            // 
+            this.MailDateTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.MailDateTime.DataPropertyName = "MailDateTime";
+            this.MailDateTime.HeaderText = "Erhalten";
+            this.MailDateTime.Name = "MailDateTime";
+            this.MailDateTime.Width = 71;
+            // 
+            // MailSubject
+            // 
+            this.MailSubject.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.MailSubject.DataPropertyName = "MailSubject";
+            this.MailSubject.HeaderText = "Mail";
+            this.MailSubject.Name = "MailSubject";
+            this.MailSubject.Width = 51;
+            // 
+            // Folder
+            // 
+            this.Folder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Folder.DataPropertyName = "Folder";
+            this.Folder.HeaderText = "Ordner";
+            this.Folder.Name = "Folder";
+            this.Folder.Width = 64;
+            // 
+            // Filename
+            // 
+            this.Filename.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Filename.DataPropertyName = "Filename";
+            this.Filename.HeaderText = "Dateiname";
+            this.Filename.Name = "Filename";
+            this.Filename.Width = 83;
+            // 
+            // Deleted
+            // 
+            this.Deleted.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Deleted.DataPropertyName = "Deleted";
+            this.Deleted.HeaderText = "Gelöscht";
+            this.Deleted.Name = "Deleted";
+            this.Deleted.Width = 55;
+            // 
+            // Message
+            // 
+            this.Message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Message.DataPropertyName = "Message";
+            this.Message.HeaderText = "Nachricht";
+            this.Message.Name = "Message";
+            this.Message.Width = 78;
+            // 
+            // fileDropArea
+            // 
+            this.fileDropArea.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.fileDropArea.Location = new System.Drawing.Point(253, 108);
+            this.fileDropArea.Name = "fileDropArea";
+            this.fileDropArea.Size = new System.Drawing.Size(150, 150);
+            this.fileDropArea.TabIndex = 7;
             // 
             // DropForm
             // 
@@ -98,6 +171,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.logoutputGridView);
             this.Controls.Add(this.fileDropArea);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.selectedFileName);
@@ -105,7 +179,8 @@
             this.Controls.Add(this.selectedFolder);
             this.Controls.Add(this.label1);
             this.Name = "DropForm";
-            this.Size = new System.Drawing.Size(449, 261);
+            this.Size = new System.Drawing.Size(406, 683);
+            ((System.ComponentModel.ISupportInitialize)(this.logoutputGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -121,5 +196,12 @@
         public DropArea fileDropArea;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.DataGridView logoutputGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MailDateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MailSubject;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Folder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Filename;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Deleted;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Message;
     }
 }

@@ -18,6 +18,7 @@ namespace MailAblage
         internal ComboBox SelectedFolder { get; set; }
         internal ComboBox SelectedFileName { get; set; }
 
+
         public DropArea() :base()
         {
             InitializeComponent();

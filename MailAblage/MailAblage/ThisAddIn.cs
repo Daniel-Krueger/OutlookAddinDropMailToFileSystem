@@ -14,9 +14,7 @@ namespace MailAblage
 
         private Microsoft.Office.Interop.Outlook.Application app;
         private DropForm dropArea;
-        private LogOutput logOutput;
         private Microsoft.Office.Tools.CustomTaskPane dropPane;
-        private Microsoft.Office.Tools.CustomTaskPane logPane;
         public Microsoft.Office.Tools.CustomTaskPane DropPane
         {
             get
@@ -25,13 +23,6 @@ namespace MailAblage
             }
         }
 
-        public Microsoft.Office.Tools.CustomTaskPane LogPane
-        {
-            get
-            {
-                return logPane;
-            }
-        }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Globals.Ribbons.AblageRibbon.AutomaticDelecte.Checked = Properties.Settings.Default.AutomaticDelete;
@@ -41,11 +32,6 @@ namespace MailAblage
             dropPane = this.CustomTaskPanes.Add(dropArea, "Ablage");
             dropPane.Visible = Globals.Ribbons.AblageRibbon.ToggleDropAreaPane.Checked;
             dropPane.VisibleChanged += new EventHandler(dropPaneVisibilityChanged);
-
-            logOutput = new LogOutput();
-            logPane = this.CustomTaskPanes.Add(logOutput, "Log");
-            logPane.Visible = Globals.Ribbons.AblageRibbon.ToggleLogPane.Checked;
-            logPane.VisibleChanged += new EventHandler(logPaneVisibilityChanged);
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -107,7 +93,7 @@ namespace MailAblage
             }
             finally
             {
-                logOutput.LogEntries.Add(newEntry);
+                dropArea.LogEntries.Add(newEntry);
             }
             //string filter = string.Format("@SQL=\"http://schemas.microsoft.com/mapi/proptag/0x1035001F\" = '{0}'", eventArgs.Info);
             //object result = test.Find(filter);
