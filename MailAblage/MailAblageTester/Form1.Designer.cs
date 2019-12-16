@@ -17,7 +17,7 @@
             {
                 components.Dispose();
             }
-            this.dropArea.Dispose();
+            this.dropForm1.Dispose();
             base.Dispose(disposing);
         }
 
@@ -29,24 +29,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dropArea = new MailAblage.DropArea();
+            this.dropForm1 = new MailAblage.DropForm();
             this.SuspendLayout();
             // 
-            // dropArea
+            // dropForm1
             // 
-            this.dropArea.AutoSize = true;
-            this.dropArea.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.dropArea.Location = new System.Drawing.Point(12, 12);
-            this.dropArea.Name = "dropArea";
-            this.dropArea.Size = new System.Drawing.Size(800, 500);
-            this.dropArea.TabIndex = 0;
+            this.dropForm1.AutoSize = true;
+            this.dropForm1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.dropForm1.Location = new System.Drawing.Point(12, 12);
+            this.dropForm1.Name = "dropForm1";
+            this.dropForm1.Size = new System.Drawing.Size(406, 683);
+            this.dropForm1.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 517);
-            this.Controls.Add(this.dropArea);
+            this.Controls.Add(this.dropForm1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -56,7 +56,7 @@
 
         #endregion
 
-        private MailAblage.DropArea dropArea;
+        private MailAblage.DropForm dropForm1;
     }
 }
 

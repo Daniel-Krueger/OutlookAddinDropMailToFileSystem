@@ -15,7 +15,7 @@ namespace MailAblageTester
         public Form1()
         {
             InitializeComponent();
-            //this.dropArea.InitControls(@"D:\Temp");
+            this.dropForm1.InitControls(@"D:\Temp");
         }
     }
 }

@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MailAblage
 {
 
     public partial class DropForm : UserControl
     {
-
+        private const string fileNamePatternGroup = "filename";
+        private static Regex FileNamePattern = new Regex(@"\d{4}-\d{1,2}-\d{1,2}\s*\(\d*\)\s*(?<" + fileNamePatternGroup + @">.*)\.[^.]*$");
+        private string oldFolder = null;
         public string DefaultPath = "";
         private const int MaxFolderNames = 5;
 
@@ -66,9 +69,9 @@ namespace MailAblage
 
         private void selectDirectory_ButtonClick(object sender, MouseEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.selectedFolder.SelectedItem as string))
+            if (!string.IsNullOrEmpty(this.selectedFolder.Text))
             {
-                this.openFileDialog.InitialDirectory = this.selectedFolder.SelectedItem as string;
+                this.openFileDialog.InitialDirectory = this.selectedFolder.Text;
             }
             else if (string.IsNullOrEmpty(this.openFileDialog.InitialDirectory))
             {
@@ -77,18 +80,22 @@ namespace MailAblage
             DialogResult result = this.openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                string[] currentValues = new string[this.selectedFolder.Items.Count];
-                this.selectedFolder.Items.CopyTo(currentValues, 0);
-                this.selectedFolder.Items.Clear();
                 string selectedPath = this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\"));
-                var index = this.selectedFolder.Items.Add(selectedPath);
-                this.selectedFolder.SelectedItem = index;
-                this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
-                this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(selectedPath)).Take(MaxFolderNames).ToArray());
+                UpdateSelectedFolders(selectedPath);
             }
 
         }
 
+        private void UpdateSelectedFolders(string selectedPath)
+        {
+            string[] currentValues = new string[this.selectedFolder.Items.Count];
+            this.selectedFolder.Items.CopyTo(currentValues, 0);
+            this.selectedFolder.Items.Clear();
+            var index = this.selectedFolder.Items.Add(selectedPath);
+            this.selectedFolder.SelectedItem = index;
+            this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
+            this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(selectedPath)).Take(MaxFolderNames).ToArray());
+        }
 
         private void DisplayMessage(OutlookStorage.Message outlookMsg)
         {
@@ -116,5 +123,27 @@ namespace MailAblage
             //}
         }
 
+        private void selectedFolder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string newFolder = this.selectedFolder.Text;
+            if (newFolder.Equals(oldFolder, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+            var filenames = System.IO.Directory.GetFiles(newFolder);
+            var filePatterns = new HashSet<string>();
+            foreach (var filename in filenames)
+            {
+                var matches = FileNamePattern.Match(filename);
+                if (matches.Success)
+                {
+                    filePatterns.Add(matches.Groups[fileNamePatternGroup].Value);
+                }
+            }
+            this.selectedFileName.Items.Clear();
+            this.selectedFileName.Text = null;
+            this.selectedFileName.Items.AddRange(filePatterns.ToArray());
+            oldFolder = newFolder;
+        }
     }
 }

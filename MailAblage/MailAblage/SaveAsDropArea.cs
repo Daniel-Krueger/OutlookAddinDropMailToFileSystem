@@ -60,9 +60,9 @@ namespace MailAblage
                         UpdateEntry(filestream, newEntry);
                     }
 
-                    if (!string.IsNullOrEmpty(this.SelectedFolder.SelectedItem as string))
+                    if (!string.IsNullOrEmpty(this.SelectedFolder.Text))
                     {
-                        this.openFileDialog.InitialDirectory = this.SelectedFolder.SelectedItem as string;
+                        this.openFileDialog.InitialDirectory = this.SelectedFolder.Text;
                     }
                     this.openFileDialog.DefaultExt = filename.Substring(filename.LastIndexOf('.'));
                     this.openFileDialog.FileName = filename;

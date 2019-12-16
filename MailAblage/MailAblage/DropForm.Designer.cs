@@ -37,7 +37,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 12);
+            this.label1.Location = new System.Drawing.Point(3, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 2;
@@ -48,10 +48,11 @@
             this.selectedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.selectedFolder.FormattingEnabled = true;
-            this.selectedFolder.Location = new System.Drawing.Point(98, 28);
+            this.selectedFolder.Location = new System.Drawing.Point(3, 41);
             this.selectedFolder.Name = "selectedFolder";
-            this.selectedFolder.Size = new System.Drawing.Size(305, 21);
+            this.selectedFolder.Size = new System.Drawing.Size(400, 21);
             this.selectedFolder.TabIndex = 3;
+            this.selectedFolder.SelectedIndexChanged += new System.EventHandler(this.selectedFolder_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -74,7 +75,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 28);
+            this.button1.Location = new System.Drawing.Point(70, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(86, 23);
             this.button1.TabIndex = 6;

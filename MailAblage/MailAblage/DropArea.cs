@@ -19,7 +19,7 @@ namespace MailAblage
         internal ComboBox SelectedFileName { get; set; }
 
 
-        public DropArea() :base()
+        public DropArea() : base()
         {
             InitializeComponent();
         }
@@ -33,11 +33,14 @@ namespace MailAblage
         {
             try
             {
-                if (string.IsNullOrEmpty(this.SelectedFolder.SelectedItem as string))
+                if (string.IsNullOrEmpty(this.SelectedFolder.Text))
                 {
                     throw new ApplicationException("Kein Ordner ausgewählt.");
                 }
-                System.Console.WriteLine("test");
+                if (string.IsNullOrEmpty(this.SelectedFileName.Text))
+                {
+                    throw new ApplicationException("Kein Namensformat ausgewählt.");
+                }
 
                 //wrap standard IDataObject in OutlookDataObject
                 OutlookDataObject dataObject = new OutlookDataObject(e.Data);
@@ -46,22 +49,23 @@ namespace MailAblage
                 string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
                 MemoryStream[] filestreams = (MemoryStream[])dataObject.GetData("FileContents");
                 LogEntry newEntry = new LogEntry();
+                newEntry.Folder = this.SelectedFolder.Text;
                 for (int fileIndex = 0; fileIndex < filenames.Length; fileIndex++)
                 {
                     //use the fileindex to get the name and data stream
                     string filename = filenames[fileIndex];
                     MemoryStream filestream = filestreams[fileIndex];
 
+
                     if (filename.EndsWith("msg"))
                     {
                         UpdateEntry(filestream, newEntry);
+
                     }
                     else
                     {
-
-                        newEntry.Filename = this.SelectedFileName.Text;
+                        newEntry.Filename = $"{this.SelectedFileName.Text}.{filename.Substring(filename.LastIndexOf("."))}";
                     }
-                    newEntry.Folder = this.SelectedFolder.SelectedItem as string;
                     //save the file stream using its name to the application path
                     string targetPath = Path.Combine(newEntry.Folder, newEntry.Filename);
                     if (File.Exists(targetPath))
@@ -83,11 +87,16 @@ namespace MailAblage
         private void UpdateEntry(MemoryStream filestream, LogEntry entry)
         {
             OutlookStorage.Message outlookMsg = new OutlookStorage.Message(filestream);
-            string prefix = outlookMsg.ReceivedDate.ToString("yyyy-MM-dd");
-            entry.Filename = $"{prefix} {SelectedFileName.Text}.msg";
             entry.MailSubject = outlookMsg.Subject;
             entry.MailDateTime = outlookMsg.ReceivedDate;
             entry.MessageId = outlookMsg.ID;
+            int fileCounter = 1;
+            entry.Filename = $"{entry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {SelectedFileName.Text}.msg";
+            while (File.Exists(Path.Combine(entry.Folder, entry.Filename)))
+            {
+                fileCounter++;
+                entry.Filename = $"{entry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {SelectedFileName.Text}.msg";
+            }
         }
 
 
