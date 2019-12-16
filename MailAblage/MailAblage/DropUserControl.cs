@@ -14,6 +14,9 @@ namespace MailAblage
         public delegate void FileSavedHandler(object sender, FileSavedEventArgs e);
         public event FileSavedHandler OnFileSaved;
 
+        public delegate void DropCompletedHandler(object sender, DropCompletedEventArgs e);
+        public event DropCompletedHandler OnDropCompleted;
+
         public DropUserControl()
         {
             dropTarget = new DropTarget(this);
@@ -50,6 +53,27 @@ namespace MailAblage
             public FileSavedEventArgs(LogEntry entry)
             {
                 Entry = entry;
+            }
+        }
+
+        protected void DropCompleted(string folder, string filename)
+        {
+            // Make sure someone is listening to event
+            if (OnDropCompleted == null) return;
+
+            var args = new DropCompletedEventArgs(folder,filename);
+            OnDropCompleted(this, args);
+        }
+
+        public class DropCompletedEventArgs : EventArgs
+        {
+            public string Folder{ get; private set; }
+            public string Filename { get; private set; }
+
+            public DropCompletedEventArgs(string folderPath, string filename)
+            {
+                Folder = folderPath;
+                Filename = filename;
             }
         }
 

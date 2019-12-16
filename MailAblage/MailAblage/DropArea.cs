@@ -48,14 +48,15 @@ namespace MailAblage
                 //get the names and data streams of the files dropped
                 string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
                 MemoryStream[] filestreams = (MemoryStream[])dataObject.GetData("FileContents");
-                LogEntry newEntry = new LogEntry();
-                newEntry.Folder = this.SelectedFolder.Text;
+               
                 for (int fileIndex = 0; fileIndex < filenames.Length; fileIndex++)
                 {
                     //use the fileindex to get the name and data stream
                     string filename = filenames[fileIndex];
                     MemoryStream filestream = filestreams[fileIndex];
 
+                    LogEntry newEntry = new LogEntry();
+                    newEntry.Folder = this.SelectedFolder.Text;
 
                     if (filename.EndsWith("msg"))
                     {

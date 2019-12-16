@@ -16,8 +16,6 @@ namespace MailAblage
 
     public partial class DropForm : UserControl
     {
-        private const string fileNamePatternGroup = "filename";
-        private static Regex FileNamePattern = new Regex(@"\d{4}-\d{1,2}-\d{1,2}\s*\(\d*\)\s*(?<" + fileNamePatternGroup + @">.*)\.[^.]*$");
         private string oldFolder = null;
         public string DefaultPath = "";
         private const int MaxFolderNames = 5;
@@ -36,7 +34,7 @@ namespace MailAblage
             this.fileDropArea.SelectedFolder = this.selectedFolder;
             this.saveAsDropArea.SelectedFileName = this.selectedFileName;
             this.saveAsDropArea.SelectedFolder = this.selectedFolder;
-
+            this.saveAsDropArea.OnDropCompleted += DropCompleted;
             this.DefaultPath = defaultPath;
             if (Properties.Settings.Default.LastFolders != null && Properties.Settings.Default.LastFolders.Count > 0)
             {
@@ -82,8 +80,23 @@ namespace MailAblage
             {
                 string selectedPath = this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\"));
                 UpdateSelectedFolders(selectedPath);
+                selectedFileName.Text = Helper.GetFileNamePattern(this.openFileDialog.FileName.Substring(this.openFileDialog.FileName.LastIndexOf("\\")));
             }
+        }
 
+        private void DropCompleted(object sender, DropUserControl.DropCompletedEventArgs eventArgs)
+        {            
+            UpdateSelectedFolders(eventArgs.Folder);
+            string pattern = Helper.GetFileNamePattern(eventArgs.Filename);
+            for (var i = 0; i < selectedFileName.Items.Count; i++)
+            {
+                if (selectedFileName.Items[i].Equals(pattern))
+                {
+                    selectedFileName.SelectedIndex = i;
+                    break;
+                }
+            }
+            
         }
 
         private void UpdateSelectedFolders(string selectedPath)
@@ -134,15 +147,11 @@ namespace MailAblage
             var filePatterns = new HashSet<string>();
             foreach (var filename in filenames)
             {
-                var matches = FileNamePattern.Match(filename);
-                if (matches.Success)
-                {
-                    filePatterns.Add(matches.Groups[fileNamePatternGroup].Value);
-                }
+                filePatterns.Add(Helper.GetFileNamePattern(filename));
             }
             this.selectedFileName.Items.Clear();
             this.selectedFileName.Text = null;
-            this.selectedFileName.Items.AddRange(filePatterns.ToArray());
+            this.selectedFileName.Items.AddRange(filePatterns.OrderBy(x => x).ToArray());
             oldFolder = newFolder;
         }
     }
