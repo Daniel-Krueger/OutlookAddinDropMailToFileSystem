@@ -19,8 +19,8 @@ namespace MailAblage
         private string oldFolder = null;
         public string DefaultPath = "";
         private const int MaxFolderNames = 5;
-
-        public BindingSource LogEntries { get; private set; }
+        internal const string favoritePrefix = "*** ";
+        private static List<string> favoriteFolders = new List<string>();
 
         public DropForm()
         {
@@ -43,11 +43,8 @@ namespace MailAblage
                 this.selectedFolder.Items.AddRange(newValues);
                 this.selectedFolder.SelectedItem = this.selectedFolder.Items[0];
             }
-
-            LogEntries = new BindingSource();
-            this.logoutputGridView.DataSource = LogEntries;
-            logoutputGridView.AutoGenerateColumns = false;
         }
+
         protected override void Dispose(bool disposing)
         {
             Properties.Settings.Default.LastFolders = new System.Collections.Specialized.StringCollection();
@@ -69,7 +66,7 @@ namespace MailAblage
         {
             if (!string.IsNullOrEmpty(this.selectedFolder.Text))
             {
-                this.openFileDialog.InitialDirectory = this.selectedFolder.Text;
+                this.openFileDialog.InitialDirectory = this.selectedFolder.Text.Replace(favoritePrefix, "");
             }
             else if (string.IsNullOrEmpty(this.openFileDialog.InitialDirectory))
             {
@@ -85,7 +82,7 @@ namespace MailAblage
         }
 
         private void DropCompleted(object sender, DropUserControl.DropCompletedEventArgs eventArgs)
-        {            
+        {
             UpdateSelectedFolders(eventArgs.Folder);
             string pattern = Helper.GetFileNamePattern(eventArgs.Filename);
             for (var i = 0; i < selectedFileName.Items.Count; i++)
@@ -96,18 +93,23 @@ namespace MailAblage
                     break;
                 }
             }
-            
+
         }
 
         private void UpdateSelectedFolders(string selectedPath)
         {
+            if (selectedPath.Equals(this.selectedFolder.Text.Replace(favoritePrefix, ""), StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
             string[] currentValues = new string[this.selectedFolder.Items.Count];
             this.selectedFolder.Items.CopyTo(currentValues, 0);
             this.selectedFolder.Items.Clear();
             var index = this.selectedFolder.Items.Add(selectedPath);
             this.selectedFolder.SelectedItem = index;
             this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
-            this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(selectedPath)).Take(MaxFolderNames).ToArray());
+            this.selectedFolder.Items.AddRange(currentValues.Where(x => !x.Equals(selectedPath) && !x.StartsWith(favoritePrefix)).Take(MaxFolderNames).ToArray());
+            this.selectedFolder.Items.AddRange(favoriteFolders.ToArray());
         }
 
         private void DisplayMessage(OutlookStorage.Message outlookMsg)
@@ -138,7 +140,7 @@ namespace MailAblage
 
         private void selectedFolder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string newFolder = this.selectedFolder.Text;
+            string newFolder = this.selectedFolder.Text.Replace(favoritePrefix, "");
             if (newFolder.Equals(oldFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
@@ -147,12 +149,40 @@ namespace MailAblage
             var filePatterns = new HashSet<string>();
             foreach (var filename in filenames)
             {
-                filePatterns.Add(Helper.GetFileNamePattern(filename));
+                filePatterns.Add(Helper.GetFileNamePattern(filename.Substring(newFolder.Length + 1)));
             }
             this.selectedFileName.Items.Clear();
             this.selectedFileName.Text = null;
             this.selectedFileName.Items.AddRange(filePatterns.OrderBy(x => x).ToArray());
             oldFolder = newFolder;
+        }
+
+        public void AddFavoriteFolders(string[] favorites)
+        {
+            favoriteFolders.Clear();
+            foreach (var value in favorites)
+            {
+                var label = favoritePrefix + value;
+                favoriteFolders.Add(label);                
+            }
+
+            var currentSelectedItem = this.selectedFolder.SelectedItem as string;
+            string[] currentValues = new string[this.selectedFolder.Items.Count];
+            this.selectedFolder.Items.CopyTo(currentValues, 0);
+            this.selectedFolder.Items.Clear();
+            foreach (var value in currentValues)
+            {
+                if (value.StartsWith(favoritePrefix))
+                {
+                    continue;
+                }
+                var index = this.selectedFolder.Items.Add(value);
+                if (currentSelectedItem.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.selectedFolder.SelectedItem = this.selectedFolder.Items[index];
+                }
+            }
+            this.selectedFolder.Items.AddRange(favoriteFolders.ToArray());
         }
     }
 }

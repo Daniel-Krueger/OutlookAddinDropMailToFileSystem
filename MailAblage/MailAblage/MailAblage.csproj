@@ -202,6 +202,12 @@
     </Compile>
     <Compile Include="GlobalErrorHandler.cs" />
     <Compile Include="LogEntry.cs" />
+    <Compile Include="LogOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogOutput.Designer.cs">
+      <DependentUpon>LogOutput.cs</DependentUpon>
+    </Compile>
     <Compile Include="OutlookDataObject.cs" />
     <Compile Include="OutlookStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -221,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DropUserControl.resx">
       <DependentUpon>DropUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogOutput.resx">
+      <DependentUpon>LogOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

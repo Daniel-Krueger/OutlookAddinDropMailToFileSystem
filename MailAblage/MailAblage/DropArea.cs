@@ -56,7 +56,7 @@ namespace MailAblage
                     MemoryStream filestream = filestreams[fileIndex];
 
                     LogEntry newEntry = new LogEntry();
-                    newEntry.Folder = this.SelectedFolder.Text;
+                    newEntry.Folder = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
 
                     if (filename.EndsWith("msg"))
                     {
@@ -99,7 +99,6 @@ namespace MailAblage
                 entry.Filename = $"{entry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {SelectedFileName.Text}.msg";
             }
         }
-
 
     }
 }

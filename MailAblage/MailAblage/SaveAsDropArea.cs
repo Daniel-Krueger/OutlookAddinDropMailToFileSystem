@@ -66,7 +66,7 @@ namespace MailAblage
                     {
                         if (!string.IsNullOrEmpty(this.SelectedFolder.Text))
                         {
-                            this.openFileDialog.InitialDirectory = this.SelectedFolder.Text;
+                            this.openFileDialog.InitialDirectory = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
                         }
                         this.openFileDialog.DefaultExt = filename.Substring(filename.LastIndexOf('.'));
                         this.openFileDialog.FileName = filename;
@@ -80,26 +80,19 @@ namespace MailAblage
 
                     }
 
-
                     LogEntry newEntry = new LogEntry();
                     newEntry.Folder = targetFolder;
+                    string fileNamePattern = Helper.GetFileNamePattern(targetFileName);
                     if (filename.EndsWith("msg"))
                     {
                         UpdateEntry(filestream, newEntry);
-                        if (fileIndex == 0)
+
+                        int fileCounter = 1;
+                        newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
+                        while (File.Exists(Path.Combine(newEntry.Folder, newEntry.Filename)))
                         {
-                            newEntry.Filename = targetFileName;
-                        }
-                        else
-                        {
-                            string fileNamePattern = Helper.GetFileNamePattern(targetFileName);
-                            int fileCounter = 1;
+                            fileCounter++;
                             newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
-                            while (File.Exists(Path.Combine(newEntry.Folder, newEntry.Filename)))
-                            {
-                                fileCounter++;
-                                newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
-                            }
                         }
                     }
                     else

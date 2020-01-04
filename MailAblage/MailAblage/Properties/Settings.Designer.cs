@@ -45,5 +45,88 @@ namespace MailAblage.Properties {
                 this["LastFolders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DropPaneVisible {
+            get {
+                return ((bool)(this["DropPaneVisible"]));
+            }
+            set {
+                this["DropPaneVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogPaneVisible {
+            get {
+                return ((bool)(this["LogPaneVisible"]));
+            }
+            set {
+                this["LogPaneVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection Favorites {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Favorites"]));
+            }
+            set {
+                this["Favorites"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DropPaneSize {
+            get {
+                return ((int)(this["DropPaneSize"]));
+            }
+            set {
+                this["DropPaneSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DropPanePosition {
+            get {
+                return ((int)(this["DropPanePosition"]));
+            }
+            set {
+                this["DropPanePosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LogPaneSize {
+            get {
+                return ((int)(this["LogPaneSize"]));
+            }
+            set {
+                this["LogPaneSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LogPanePosition {
+            get {
+                return ((int)(this["LogPanePosition"]));
+            }
+            set {
+                this["LogPanePosition"] = value;
+            }
+        }
     }
 }

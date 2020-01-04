@@ -13,19 +13,6 @@
             InitializeComponent();
         }
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Component Designer generated code
 
         /// <summary>
@@ -40,15 +27,23 @@
             this.AutomaticDelecte = this.Factory.CreateRibbonCheckBox();
             this.ToggleLogPane = this.Factory.CreateRibbonToggleButton();
             this.button2 = this.Factory.CreateRibbonButton();
+            this.favorites = this.Factory.CreateRibbonGroup();
+            this.favoriteFolders = this.Factory.CreateRibbonDropDown();
+            this.addFavoriteButton = this.Factory.CreateRibbonButton();
+            this.removeFavoriteButton = this.Factory.CreateRibbonButton();
             this.directorySearcher = new System.DirectoryServices.DirectorySearcher();
             this.button1 = this.Factory.CreateRibbonButton();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TabAblage.SuspendLayout();
             this.Settings.SuspendLayout();
+            this.favorites.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabAblage
             // 
             this.TabAblage.Groups.Add(this.Settings);
+            this.TabAblage.Groups.Add(this.favorites);
             this.TabAblage.Label = "Ablage";
             this.TabAblage.Name = "TabAblage";
             // 
@@ -72,12 +67,42 @@
             this.AutomaticDelecte.Label = "Automatisch löschen";
             this.AutomaticDelecte.Name = "AutomaticDelecte";
             this.AutomaticDelecte.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.automaticDelete_Click);
-        
+            // 
+            // ToggleLogPane
+            // 
+            this.ToggleLogPane.Label = "Log anzeigen";
+            this.ToggleLogPane.Name = "ToggleLogPane";
+            this.ToggleLogPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleLogPane_Click);
             // 
             // button2
             // 
             this.button2.Label = "";
             this.button2.Name = "button2";
+            // 
+            // favorites
+            // 
+            this.favorites.Items.Add(this.favoriteFolders);
+            this.favorites.Items.Add(this.addFavoriteButton);
+            this.favorites.Items.Add(this.removeFavoriteButton);
+            this.favorites.Label = "Favoriten";
+            this.favorites.Name = "favorites";
+            // 
+            // favoriteFolders
+            // 
+            this.favoriteFolders.Label = "Favoriten";
+            this.favoriteFolders.Name = "favoriteFolders";
+            // 
+            // addFavoriteButton
+            // 
+            this.addFavoriteButton.Label = "Neuen Auswählen";
+            this.addFavoriteButton.Name = "addFavoriteButton";
+            this.addFavoriteButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.addFavoriteButton_Click);
+            // 
+            // removeFavoriteButton
+            // 
+            this.removeFavoriteButton.Label = "Aktuellen löschen";
+            this.removeFavoriteButton.Name = "removeFavoriteButton";
+            this.removeFavoriteButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.removeFavoriteButton_Click);
             // 
             // directorySearcher
             // 
@@ -90,6 +115,10 @@
             this.button1.Label = "button1";
             this.button1.Name = "button1";
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog";
+            // 
             // AblageRibbon
             // 
             this.Name = "AblageRibbon";
@@ -99,6 +128,8 @@
             this.TabAblage.PerformLayout();
             this.Settings.ResumeLayout(false);
             this.Settings.PerformLayout();
+            this.favorites.ResumeLayout(false);
+            this.favorites.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -112,6 +143,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton ToggleDropAreaPane;
         public Microsoft.Office.Tools.Ribbon.RibbonCheckBox AutomaticDelecte;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton ToggleLogPane;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup favorites;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown favoriteFolders;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton addFavoriteButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton removeFavoriteButton;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 
     partial class ThisRibbonCollection

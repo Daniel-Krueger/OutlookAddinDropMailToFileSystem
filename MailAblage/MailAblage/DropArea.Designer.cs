@@ -37,10 +37,10 @@
             // 
             this.image.Image = ((System.Drawing.Image)(resources.GetObject("image.Image")));
             this.image.InitialImage = ((System.Drawing.Image)(resources.GetObject("image.InitialImage")));
-            this.image.Location = new System.Drawing.Point(3, 3);
+            this.image.Location = new System.Drawing.Point(0, 0);
             this.image.Name = "image";
-            this.image.Size = new System.Drawing.Size(128, 128);
-            this.image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.image.Size = new System.Drawing.Size(50, 50);
+            this.image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.image.TabIndex = 0;
             this.image.TabStop = false;
             this.image.DragDrop += new System.Windows.Forms.DragEventHandler(this.itemDropped);
@@ -52,12 +52,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.image);
             this.Name = "DropArea";
-            this.Size = new System.Drawing.Size(132, 134);
+            this.Size = new System.Drawing.Size(50, 50);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.itemDropped);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.DropArea_DragOver);
             ((System.ComponentModel.ISupportInitialize)(this.image)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
