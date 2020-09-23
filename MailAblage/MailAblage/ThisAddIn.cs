@@ -60,10 +60,13 @@ namespace MailAblage
             #endregion 
 
             #region init favorites
-            string[] favorites = new string[Properties.Settings.Default.Favorites.Count];
-            Properties.Settings.Default.Favorites.CopyTo(favorites, 0);
-            Globals.Ribbons.AblageRibbon.InitFavoriteDropDownItems(favorites);
-            dropArea.AddFavoriteFolders(favorites);
+            if (Properties.Settings.Default.Favorites != null)
+            {
+                string[] favorites = new string[Properties.Settings.Default.Favorites.Count];
+                Properties.Settings.Default.Favorites.CopyTo(favorites, 0);
+                Globals.Ribbons.AblageRibbon.InitFavoriteDropDownItems(favorites);
+                dropArea.AddFavoriteFolders(favorites);
+            }
             #endregion
         }
 
@@ -157,7 +160,7 @@ namespace MailAblage
                     if (item != null)
                     {
                         string messageId = (string)oPropAccessor.GetProperty("http://schemas.microsoft.com/mapi/proptag/0x1035001E");
-                        if (messageId.Equals(newEntry.MessageId)) ;
+                        if (messageId.Equals(newEntry.MessageId))
                         {
                             itemToDelete = item;
                             break;

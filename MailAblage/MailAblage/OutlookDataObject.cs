@@ -255,7 +255,7 @@ namespace MailAblage
                         string[] fileNames = new string[fileGroupDescriptor.cItems];
 
                         //get the pointer to the first file descriptor
-                        IntPtr fileDescriptorPointer = (IntPtr)((int)fileGroupDescriptorAPointer + Marshal.SizeOf(fileGroupDescriptorAPointer));
+                        IntPtr fileDescriptorPointer = (IntPtr)((Int64)fileGroupDescriptorAPointer + Marshal.SizeOf(fileGroupDescriptorAPointer));
 
                         //loop for the number of files acording to the file group descriptor
                         for(int fileDescriptorIndex = 0;fileDescriptorIndex < fileGroupDescriptor.cItems;fileDescriptorIndex++)
@@ -265,7 +265,7 @@ namespace MailAblage
                             fileNames[fileDescriptorIndex] = fileDescriptor.cFileName;
 
                             //move the file descriptor pointer to the next file descriptor
-                            fileDescriptorPointer = (IntPtr)((int)fileDescriptorPointer + Marshal.SizeOf(fileDescriptor));
+                            fileDescriptorPointer = (IntPtr)((Int64)fileDescriptorPointer + Marshal.SizeOf(fileDescriptor));
                         }
 
                         //return the array of filenames

@@ -68,7 +68,7 @@
             // openFileDialog
             // 
             this.openFileDialog.CheckFileExists = false;
-            this.openFileDialog.FileName = "openFileDialog";
+            this.openFileDialog.FileName = "Ordner auswählen";
             // 
             // saveAsDropArea
             // 
