@@ -43,6 +43,7 @@ namespace MailAblage
 
         private void itemDropped(object sender, DragEventArgs e)
         {
+            MemoryStream[] filestreams = null;
             try
             {
 
@@ -54,76 +55,98 @@ namespace MailAblage
 
                 //get the names and data streams of the files dropped
                 string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
-                MemoryStream[] filestreams = (MemoryStream[])dataObject.GetData("FileContents");
+                filestreams = (MemoryStream[])dataObject.GetData("FileContents");
 
                 for (int fileIndex = 0; fileIndex < filenames.Length; fileIndex++)
                 {
                     //use the fileindex to get the name and data stream
                     string filename = filenames[fileIndex];
-                    MemoryStream filestream = filestreams[fileIndex];
-
-                    if (fileIndex == 0)
+                    using (MemoryStream filestream = filestreams[fileIndex])
                     {
-                        if (!string.IsNullOrEmpty(this.SelectedFolder.Text))
+
+                        LogEntry newEntry = new LogEntry();
+
+                        Helper.GetNewEntryFromMessage(filestream, out newEntry);
+                        if (fileIndex == 0)
                         {
-                            this.openFileDialog.InitialDirectory = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
+                            if (!string.IsNullOrEmpty(this.SelectedFolder.Text))
+                            {
+                                this.openFileDialog.InitialDirectory = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
+                            }
+                            this.openFileDialog.DefaultExt = filename.Substring(filename.LastIndexOf('.'));
+                            if (newEntry.SpecialCase)
+                            {
+                                this.openFileDialog.FileName = newEntry.Filename;
+                            }
+                            else
+                            {
+                                this.openFileDialog.FileName = filename;
+                            }
+                            DialogResult result = this.openFileDialog.ShowDialog();
+                            if (result != DialogResult.OK)
+                            {
+                                return;
+                            }
+                            targetFolder = this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\"));
+                            targetFileName = this.openFileDialog.FileName.Substring(targetFolder.Length + 1);
+
                         }
-                        this.openFileDialog.DefaultExt = filename.Substring(filename.LastIndexOf('.'));
-                        this.openFileDialog.FileName = filename;
-                        DialogResult result = this.openFileDialog.ShowDialog();
-                        if (result != DialogResult.OK)
+
+                        newEntry.Folder = targetFolder;
+                        
+                        string fileNamePattern = Helper.GetFileNamePattern(targetFileName);
+                        if (filename.EndsWith("msg") && !newEntry.SpecialCase)
                         {
-                            return;
-                        }
-                        targetFolder = this.openFileDialog.FileName.Substring(0, this.openFileDialog.FileName.LastIndexOf("\\"));
-                        targetFileName = this.openFileDialog.FileName.Substring(targetFolder.Length + 1);
 
-                    }
-
-                    LogEntry newEntry = new LogEntry();
-                    newEntry.Folder = targetFolder;
-                    string fileNamePattern = Helper.GetFileNamePattern(targetFileName);
-                    if (filename.EndsWith("msg"))
-                    {
-                        UpdateEntry(filestream, newEntry);
-
-                        int fileCounter = 1;
-                        newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
-                        while (File.Exists(Path.Combine(newEntry.Folder, newEntry.Filename)))
-                        {
-                            fileCounter++;
+                            int fileCounter = 1;
                             newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
+                            while (File.Exists(Path.Combine(newEntry.Folder, newEntry.Filename)))
+                            {
+                                fileCounter++;
+                                newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} ({fileCounter}) {fileNamePattern}.msg";
+                            }
                         }
+                        else
+                        {
+                            newEntry.Filename = targetFileName;
+                        }
+
+
+
+                        //save the file stream using its name to the application path
+                        string targetPath = Path.Combine(newEntry.Folder, newEntry.Filename);
+                        using (FileStream outputStream = File.Create(targetPath))
+                        {
+                            filestream.WriteTo(outputStream);
+                            outputStream.Close();
+                        }
+                        FileSaved(newEntry);
                     }
-                    else
-                    {
-                        newEntry.Filename = targetFileName;
-                    }
-
-
-
-                    //save the file stream using its name to the application path
-                    string targetPath = Path.Combine(newEntry.Folder, newEntry.Filename);
-                    FileStream outputStream = File.Create(targetPath);
-                    filestream.WriteTo(outputStream);
-                    outputStream.Close();
-                    FileSaved(newEntry);
                 }
                 DropCompleted(targetFolder, targetFileName);
+
+
+
             }
             catch (Exception ex)
             {
                 System.Windows.Forms.MessageBox.Show($"{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                if (filestreams != null)
+                {
+                    foreach (var fileStream in filestreams)
+                    {
+                        if (fileStream != null)
+                        {
+                            fileStream.Close();
+                        }
+                    }
+                }
+            }
         }
 
-        private void UpdateEntry(MemoryStream filestream, LogEntry entry)
-        {
-            OutlookStorage.Message outlookMsg = new OutlookStorage.Message(filestream);
-            entry.MailSubject = outlookMsg.Subject;
-            entry.MailDateTime = outlookMsg.ReceivedDate;
-            entry.MessageId = outlookMsg.ID;
-        }
 
 
     }

@@ -32,6 +32,7 @@ namespace MailAblage
 
         private void itemDropped(object sender, DragEventArgs e)
         {
+            MemoryStream[] filestreams = null;
             try
             {
                 if (string.IsNullOrEmpty(this.SelectedFolder.Text))
@@ -48,42 +49,49 @@ namespace MailAblage
 
                 //get the names and data streams of the files dropped
                 string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
-                MemoryStream[] filestreams = (MemoryStream[])dataObject.GetData("FileContents");
-                try
+                filestreams = (MemoryStream[])dataObject.GetData("FileContents");
+
+                Dictionary<LogEntry, MemoryStream> messageStreamMapping = new Dictionary<LogEntry, MemoryStream>();
+
+                for (int fileIndex = 0; fileIndex < filenames.Length; fileIndex++)
                 {
-                    Dictionary<LogEntry, MemoryStream> messageStreamMapping = new Dictionary<LogEntry, MemoryStream>();
+                    //use the fileindex to get the name and data stream
+                    string filename = filenames[fileIndex];
+                    MemoryStream filestream = filestreams[fileIndex];
 
-                    for (int fileIndex = 0; fileIndex < filenames.Length; fileIndex++)
+                    LogEntry newEntry = new LogEntry();
+
+                    if (filename.EndsWith("msg"))
                     {
-                        //use the fileindex to get the name and data stream
-                        string filename = filenames[fileIndex];
-                        MemoryStream filestream = filestreams[fileIndex];
-
-                        LogEntry newEntry = new LogEntry();
+                        Helper.GetNewEntryFromMessage(filestream, out newEntry);
                         newEntry.Folder = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
-
-                        if (filename.EndsWith("msg"))
-                        {
-                            OutlookStorage.Message outlookMsg = new OutlookStorage.Message(filestream);
-                            newEntry.MailSubject = outlookMsg.Subject;
-                            newEntry.MailDateTime = outlookMsg.ReceivedDate;
-                            newEntry.MessageId = outlookMsg.ID;
-                            messageStreamMapping.Add(newEntry, filestream);
-                        }
-                        else
-                        {
-                            newEntry.Filename = $"{this.SelectedFileName.Text}.{filename.Substring(filename.LastIndexOf("."))}";
-                            SaveFileStreamToFile(filestream, newEntry);
-                        }
+                        messageStreamMapping.Add(newEntry, filestream);
+                    }
+                    else
+                    {
+                        newEntry.Filename = $"{this.SelectedFileName.Text}.{filename.Substring(filename.LastIndexOf("."))}";
+                        newEntry.Folder = this.SelectedFolder.Text.Replace(DropForm.favoritePrefix, "");
+                        SaveFileStreamToFile(filestream, newEntry);
                     }
 
-                    foreach (var kvp in messageStreamMapping.OrderBy(x => x.Key.MailDateTime))
+                }
+
+                foreach (var kvp in messageStreamMapping.OrderBy(x => x.Key.MailDateTime))
+                {
+                    if (!kvp.Key.SpecialCase)
                     {
                         PrepareFilename(kvp.Value, kvp.Key);
-                        SaveFileStreamToFile(kvp.Value, kvp.Key);
                     }
+                    SaveFileStreamToFile(kvp.Value, kvp.Key);
                 }
-                finally
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (filestreams != null)
                 {
                     foreach (var fileStream in filestreams)
                     {
@@ -93,10 +101,6 @@ namespace MailAblage
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show($"{ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -108,9 +112,11 @@ namespace MailAblage
             {
                 throw new ApplicationException($"Datei mit Namen {targetPath} wurde bereits abgelegt");
             }
-            FileStream outputStream = File.Create(targetPath);
-            filestream.WriteTo(outputStream);
-            outputStream.Close();
+            using (FileStream outputStream = File.Create(targetPath))
+            {
+                filestream.WriteTo(outputStream);
+                outputStream.Close();
+            }
             FileSaved(newEntry);
         }
 

@@ -15,5 +15,6 @@ namespace MailAblage
         public bool deleted { get; set; }
         public string MessageId { get; set; }
         public string Message { get; set; }
+        public bool SpecialCase { get; set; }
     }
 }
