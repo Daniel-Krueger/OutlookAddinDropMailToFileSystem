@@ -33,7 +33,7 @@
     <PublishUrl>C:\Workspace\_Privat\OutlookAddinDropMailToFileSystem\MailAblage\Publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.23</ApplicationVersion>
+    <ApplicationVersion>1.0.0.25</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -124,6 +124,7 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
@@ -264,6 +265,8 @@
     <Compile Include="DropArea.Designer.cs">
       <DependentUpon>DropArea.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="VstoSettingsProvider.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
