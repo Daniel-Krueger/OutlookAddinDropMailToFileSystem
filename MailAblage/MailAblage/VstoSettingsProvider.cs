@@ -162,7 +162,11 @@ namespace MailAblage
                                 }
                                 catch (XmlException xe1)
                                 {
-                                    throw new ApplicationException("Failed to read value from settings file", xe1);
+                                    // Property not found in configuration, continue with default value
+                                    if (xe1.HResult != -2146232000)
+                                    {
+                                        throw new ApplicationException("Failed to read value from settings file", xe1);
+                                    }
                                 }
                             }
                         }

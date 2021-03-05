@@ -145,14 +145,19 @@ namespace MailAblage
             {
                 return;
             }
+            this.selectedFileName.Items.Clear();
+            this.selectedFileName.Text = null;
+
+            if (!System.IO.Directory.Exists(newFolder))
+            {
+                return;
+            }
             var filenames = System.IO.Directory.GetFiles(newFolder);
             var filePatterns = new HashSet<string>();
             foreach (var filename in filenames)
             {
                 filePatterns.Add(Helper.GetFileNamePattern(filename.Substring(newFolder.Length + 1)));
             }
-            this.selectedFileName.Items.Clear();
-            this.selectedFileName.Text = null;
             this.selectedFileName.Items.AddRange(filePatterns.OrderBy(x => x).ToArray());
             oldFolder = newFolder;
         }
