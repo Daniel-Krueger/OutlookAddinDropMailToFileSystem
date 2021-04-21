@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -452,7 +453,7 @@ namespace MailAblage
         #region ReferenceManager
 
         private class ReferenceManager
-        {
+        {           
             public static void AddItem(object track)
             {
                 lock (instance)
@@ -644,6 +645,16 @@ namespace MailAblage
         public class Message : OutlookStorage
         {
             #region Property(s)
+            Regex DatePattern = new Regex(@"(\d\d\d\d-\d\d-\d\dT[0-9:\.]*Z)", RegexOptions.Multiline);
+
+            /// <summary>
+            /// Gets the Item Class of the outlook message.
+            /// </summary>
+            /// <value>The class of the outlook message.</value>
+            public String ItemClass
+            {
+                get { return this.GetMapiPropertyString(OutlookStorage.PR_ITEMCLASS); }
+            }
 
             /// <summary>
             /// Gets the list of recipients in the outlook message.
@@ -745,10 +756,15 @@ namespace MailAblage
                 {
                     if (_dateRevieved == DateTime.MinValue)
                     {
+
                         string dateMess = this.GetMapiPropertyString(OutlookStorage.PR_RECEIVED_DATE);
                         if (String.IsNullOrEmpty(dateMess))
                         {
                             dateMess = this.GetMapiPropertyString(OutlookStorage.PR_RECEIVED_DATE_2);
+                        }
+                        if (String.IsNullOrEmpty(dateMess))
+                        {
+                            dateMess = this.GetMapiPropertyString(OutlookStorage.PR_RECEIVED_DATE_3);
                         }
                         _dateRevieved = ExtractDate(dateMess);
                     }
@@ -761,6 +777,16 @@ namespace MailAblage
 
             private DateTime ExtractDate(string dateMess)
             {
+                DateTime response;
+                var match = DatePattern.Match(dateMess);
+                if (match.Success)
+                {
+                    if (DateTime.TryParse(match.Value, out response))
+                    {
+                        return response;
+                    }
+                }
+
                 string matchStr = "Date:";
 
                 string[] lines = dateMess.Split(new String[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -769,7 +795,6 @@ namespace MailAblage
                     if (line.StartsWith(matchStr))
                     {
                         string dateStr = line.Substring(matchStr.Length);
-                        DateTime response;
                         if (DateTime.TryParse(dateStr, out response))
                         {
                             return response;
@@ -1022,12 +1047,14 @@ namespace MailAblage
         private const int MAPI_CC = 2;
 
         //msg constants
+        private const string PR_ITEMCLASS = "001A";
         private const string PR_SUBJECT = "0037";
         private const string PR_BODY = "1000";
         private const string PR_RTF_COMPRESSED = "1009";
         private const string PR_SENDER_NAME = "0C1A";
         private const string PR_RECEIVED_DATE = "007D";
         private const string PR_RECEIVED_DATE_2 = "0047";
+        private const string PR_RECEIVED_DATE_3 = "8076";
         private const string PR_INTERNET_MESSAGE_ID = "1035";
 
         //property stream constants
