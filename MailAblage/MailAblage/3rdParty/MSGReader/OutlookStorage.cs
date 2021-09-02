@@ -794,7 +794,7 @@ namespace MailAblage
                 {
                     if (line.StartsWith(matchStr))
                     {
-                        string dateStr = line.Substring(matchStr.Length);
+                        string dateStr = line.Substring(matchStr.Length).Split('(')[0];
                         if (DateTime.TryParse(dateStr, out response))
                         {
                             return response;
