@@ -84,6 +84,7 @@ namespace MailAblage
         private void DropCompleted(object sender, DropUserControl.DropCompletedEventArgs eventArgs)
         {
             UpdateSelectedFolders(eventArgs.Folder);
+
             string pattern = Helper.GetFileNamePattern(eventArgs.Filename);
             for (var i = 0; i < selectedFileName.Items.Count; i++)
             {
@@ -98,6 +99,7 @@ namespace MailAblage
 
         private void UpdateSelectedFolders(string selectedPath)
         {
+            UpdateFilePatterns(selectedPath);
             if (selectedPath.Equals(this.selectedFolder.Text.Replace(favoritePrefix, ""), StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
@@ -145,21 +147,26 @@ namespace MailAblage
             {
                 return;
             }
+            UpdateFilePatterns(newFolder);
+            oldFolder = newFolder;
+        }
+
+        private void UpdateFilePatterns(string folder)
+        {
             this.selectedFileName.Items.Clear();
             this.selectedFileName.Text = null;
 
-            if (!System.IO.Directory.Exists(newFolder))
+            if (!System.IO.Directory.Exists(folder))
             {
                 return;
             }
-            var filenames = System.IO.Directory.GetFiles(newFolder);
+            var filenames = System.IO.Directory.GetFiles(folder);
             var filePatterns = new HashSet<string>();
             foreach (var filename in filenames)
             {
-                filePatterns.Add(Helper.GetFileNamePattern(filename.Substring(newFolder.Length + 1)));
+                filePatterns.Add(Helper.GetFileNamePattern(filename.Substring(folder.Length + 1)));
             }
             this.selectedFileName.Items.AddRange(filePatterns.OrderBy(x => x).ToArray());
-            oldFolder = newFolder;
         }
 
         public void AddFavoriteFolders(string[] favorites)
@@ -168,7 +175,7 @@ namespace MailAblage
             foreach (var value in favorites)
             {
                 var label = favoritePrefix + value;
-                favoriteFolders.Add(label);                
+                favoriteFolders.Add(label);
             }
 
             var currentSelectedItem = this.selectedFolder.SelectedItem as string;
