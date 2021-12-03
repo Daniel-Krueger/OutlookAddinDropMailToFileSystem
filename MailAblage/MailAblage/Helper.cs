@@ -14,7 +14,7 @@ namespace MailAblage
         private const string punchTypePatternGroup = "punchType";
         private const string punchDatePatternGroup = "punchDate";
         private const string punchTimePatternGroup = "punchTime";
-        private static Regex PunchInOutPattern = new Regex(@"Ihr (?<" + punchTypePatternGroup + @">.*)-Antrag vom (?<" + punchDatePatternGroup + @">.*) um (?<" + punchTimePatternGroup + @">.*):00 Uhr wurde genehmigt.");
+        private static Regex PunchInOutPattern = new Regex(@"Ihr (?<" + punchTypePatternGroup + @">.*)-\w* vom (?<" + punchDatePatternGroup + @">.*) um (?<" + punchTimePatternGroup + @">.*):00 Uhr wurde genehmigt.");
         public static string GetFileNamePattern(string filename)
         {
             var matches = FileNamePattern.Match(filename);
@@ -51,7 +51,7 @@ namespace MailAblage
                 {
 
                     var matches = PunchInOutPattern.Match(outlookMsg.BodyText);
-                    newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} (1)  Simone Krüger (Zeiterfassung) ({matches.Groups[punchDatePatternGroup].Value}) ({matches.Groups[punchTypePatternGroup].Value}) ({matches.Groups[punchTimePatternGroup].Value.Replace(":", "")}).msg";
+                    newEntry.Filename = $"{newEntry.MailDateTime.ToString("yyyy-MM-dd")} (1) Simone Krüger (Zeiterfassung) ({matches.Groups[punchDatePatternGroup].Value}) ({matches.Groups[punchTypePatternGroup].Value}) ({matches.Groups[punchTimePatternGroup].Value.Replace(":", "")}).msg";
                     newEntry.SpecialCase = true;
                 }
             }
